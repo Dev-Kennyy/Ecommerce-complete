@@ -5,7 +5,7 @@ function ExploreProduct() {
   return (
     <div className="p-6">
       <CategoryHeader p="Our Products" h2="Explore Our Product" />
-      <Products />
+      {/* <Products /> */}
     </div>
   );
 }

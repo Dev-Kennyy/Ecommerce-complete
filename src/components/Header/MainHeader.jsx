@@ -9,7 +9,7 @@ import RightHeaderContent from "./RightHeaderContent";
 function MainHeader() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="relative flex items-center justify-between border-b border-gray-300 p-6">
+    <header className="sticky top-0 z-50 flex h-full items-center justify-between border-b border-gray-300 bg-white p-6">
       <LeftHeader />
       <MiddleHeader />
       <RightHeader />
@@ -19,7 +19,7 @@ function MainHeader() {
       <div
         className={`absolute left-0 top-20 flex w-full transform flex-col items-center gap-6 bg-white transition-transform md:hidden ${isOpen ? "" : "hidden"}`}
       >
-        <ul className="md:hiddenz flex flex-col items-center justify-center">
+        <ul className="md:hiddenz z-50 flex flex-col items-center justify-center">
           <HeaderNavList />
         </ul>
         <div className="flex flex-col-reverse items-center gap-6">

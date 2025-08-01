@@ -16,7 +16,7 @@ function AllProduct() {
   if (isLoading) return <div>Loading wait</div>;
 
   return (
-    <div className="flex flex-wrap justify-center gap-3">
+    <div className="grid grid-cols-2 gap-4 px-4 sm:grid-cols-2 md:grid-cols-3 md:px-10 lg:grid-cols-4">
       {product.map((product) => (
         <AllProductPageP productdata={product} key={product.id} />
       ))}

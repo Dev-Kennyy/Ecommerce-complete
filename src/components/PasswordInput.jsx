@@ -9,6 +9,7 @@ function PasswordInput({ type, placeholder, width, label }) {
         placeholder={placeholder}
         width={width}
         className="bg-[#F5F5F5] p-2 text-sm shadow outline-none hover:border md:w-[600px]"
+        required
       />
     </div>
   );
