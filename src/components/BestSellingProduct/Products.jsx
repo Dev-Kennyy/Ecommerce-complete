@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Product from "./Product";
 import { apiProductTwo } from "../../services/apiProductTwo";
+import Loader from "../Loader";
 
 function Products() {
   const {
@@ -12,7 +13,12 @@ function Products() {
     queryFn: apiProductTwo,
   });
   console.log(products);
-  if (isLoading) return <div className="p-10">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="p-10">
+        <Loader />
+      </div>
+    );
   if (error)
     return <div className="p-10 text-red-500">Error loading products</div>;
 

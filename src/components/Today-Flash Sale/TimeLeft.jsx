@@ -10,7 +10,7 @@ function TimeLeft() {
     if (storedTime) {
       setTargetDate(Number(storedTime));
     } else {
-      const endTime = Date.now() + 200 * 24 * 60 * 60 * 1000; // 9 days from now
+      const endTime = Date.now() + 10 * 24 * 60 * 60 * 1000; // 9 days from now
       localStorage.setItem("countdownEndTime", endTime);
       setTargetDate(endTime);
     }

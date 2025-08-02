@@ -1,35 +1,61 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainHome from "./pages/MainHome.jsx";
-import SignUpPage from "./pages/SignUp/PageSignUp.jsx";
-import AppLayOut from "./pages/AppLayOut.jsx";
-import Login from "./pages/SignUp/Login.jsx";
-import NotFound from "./pages/NotFound.jsx";
-import Contact from "./pages/Contact.jsx";
-import About from "./pages/About.jsx";
-import ClickedProduct from "./pages/ClickedProduct.jsx";
-import ManageAccount from "./pages/ManageAccount.jsx";
-import PaymentPage from "./pages/PaymentPage.jsx";
-import CartPage from "./pages/CartPage.jsx";
-import AllProduct from "./pages/AllProduct.jsx";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+const MainHome = lazy(() => import("./pages/MainHome.jsx"));
+const SignUpPage = lazy(() => import("./pages/SignUp/PageSignUp.jsx"));
+const AppLayOut = lazy(() => import("./pages/AppLayOut.jsx"));
+const Login = lazy(() => import("./pages/SignUp/Login.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
+const Contact = lazy(() => import("./pages/Contact.jsx"));
+const About = lazy(() => import("./pages/About.jsx"));
+const ClickedProduct = lazy(() => import("./pages/ClickedProduct.jsx"));
+const ManageAccount = lazy(() => import("./pages/ManageAccount.jsx"));
+const PaymentPage = lazy(() => import("./pages/PaymentPage.jsx"));
+const CartPage = lazy(() => import("./pages/CartPage.jsx"));
+const AllProduct = lazy(() => import("./pages/AllProduct.jsx"));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AppLayOut />}>
-          <Route index element={<MainHome />} />
-          <Route path="signup" element={<SignUpPage />} />
-          <Route path="login" element={<Login />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="about" element={<About />} />
-          <Route path="product" element={<ClickedProduct />} />
-          <Route path="Cart" element={<CartPage />} />
-          <Route path="settings" element={<ManageAccount />} />
-          <Route path="CheckOut" element={<PaymentPage />} />
-          <Route path="Store" element={<AllProduct />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<AppLayOut />}>
+            <Route index element={<MainHome />} />
+            <Route path="signup" element={<SignUpPage />} />
+            <Route path="login" element={<Login />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="about" element={<About />} />
+            <Route path="product" element={<ClickedProduct />} />
+            <Route
+              path="Cart"
+              element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <ProtectedRoute>
+                  <ManageAccount />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="CheckOut"
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="Store" element={<AllProduct />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

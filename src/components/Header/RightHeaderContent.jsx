@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
-function RightHeaderContent() {
+function RightHeaderContent({ closeMenu }) {
   const navigate = useNavigate("/");
   const [isDown, setIsDown] = useState(false);
 
@@ -24,16 +24,18 @@ function RightHeaderContent() {
         <span className="md:hidden">Wishlist</span>
       </div>
 
-      {/* Cart */}
       <div
         className="flex cursor-pointer gap-2"
-        onClick={() => navigate("/cart")}
+        onClick={() => {
+          navigate("/cart");
+          setIsDown(false);
+          closeMenu?.();
+        }}
       >
         <CiShoppingCart className="text-2xl" />
         <span className="md:hidden">Cart</span>
       </div>
 
-      {/* User with Dropdown */}
       <div
         className="relative flex cursor-pointer gap-2"
         onClick={() => setIsDown(!isDown)}
@@ -46,18 +48,24 @@ function RightHeaderContent() {
             <ul className="flex flex-col gap-4">
               <li
                 className="hover:text-red-500"
-                onClick={() => navigate("/settings")}
+                onClick={() => {
+                  navigate("/settings");
+                  setIsDown(false);
+                  closeMenu?.();
+                }}
               >
                 Manage My Account
               </li>
-              <li
+              {/* <li
                 className="hover:text-red-500"
-                onClick={() => navigate("/cart")}
+                onClick={() => {
+                  navigate("/cart");
+                }}
               >
                 Manage Order
-              </li>
-              <li className="hover:text-red-500">Cancellation</li>
-              <li className="hover:text-red-500">My Reviews</li>
+              </li> */}
+              {/* <li className="hover:text-red-500">Cancellation</li> */}
+              {/* <li className="hover:text-red-500">My Reviews</li> */}
               <li className="hover:text-red-500">Log Out</li>
             </ul>
           </div>

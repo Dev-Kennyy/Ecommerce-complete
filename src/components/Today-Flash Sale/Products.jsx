@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import Product from "../Product";
 import { useQuery } from "@tanstack/react-query";
 import apiProducts from "../../services/apiProducts";
+import Loader from "../Loader";
 
 function Products() {
   const scrollRef = useRef(null);
@@ -23,7 +24,12 @@ function Products() {
     queryFn: apiProducts,
   });
   console.log(products);
-  if (isLoading) return <p className="px-9 py-10">Loading products...</p>;
+  if (isLoading)
+    return (
+      // <p className="px-9 py-10">
+      <Loader />
+      // </p>
+    );
   if (error) return <p className="px-9 py-10">Error: {error.message}</p>;
   return (
     <div className="relative mb-7 px-9">
