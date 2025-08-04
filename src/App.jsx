@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import Loader from "./components/Loader.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 const MainHome = lazy(() => import("./pages/MainHome.jsx"));
@@ -17,6 +20,14 @@ const CartPage = lazy(() => import("./pages/CartPage.jsx"));
 const AllProduct = lazy(() => import("./pages/AllProduct.jsx"));
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800, // Animation duration
+      easing: "ease-in-out", // Easing option
+      once: true, // Whether animation should happen only once
+      mirror: false, // Whether elements should animate out while scrolling past them
+    });
+  }, []);
   return (
     <BrowserRouter>
       <Suspense fallback={<Loader />}>

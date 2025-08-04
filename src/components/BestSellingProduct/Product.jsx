@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Product({ productdata }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const { user } = useAuth(); // ✅
+  const { user } = useAuth();
   const navigate = useNavigate("");
 
   if (!productdata) return null;
@@ -36,16 +36,15 @@ function Product({ productdata }) {
 
       <div
         className={`w-full text-center text-sm text-white ${
-          isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
+          user && isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
         }`}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           if (!user) {
             navigate("/login");
-            // <ToastContainer />;
-            // t("Please login to add items to cart.");
             return;
           }
-          if (!isInCart) dispatch(addToCart(productdata));
+          if (!isInCart) dispatch(addToCart(productWithUniqueId));
         }}
       >
         {isInCart ? "In Cart" : "Add To Cart"}

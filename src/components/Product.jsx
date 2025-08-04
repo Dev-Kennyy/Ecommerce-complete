@@ -29,7 +29,8 @@ function Product({ productdata }) {
         className={`w-full text-center text-sm text-white ${
           user && isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
         }`}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           if (!user) {
             navigate("/login");
             // <ToastContainer />;

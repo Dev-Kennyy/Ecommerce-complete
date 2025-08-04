@@ -35,12 +35,13 @@ function AllProductPageP({ productdata }) {
         className={`w-full text-center text-sm text-white ${
           isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
         }`}
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           if (!user) {
             navigate("/login");
             return;
           }
-          if (!isInCart) dispatch(addToCart(productdata));
+          if (!isInCart) dispatch(addToCart(productWithUniqueId));
         }}
       >
         {isInCart ? "In Cart" : "Add To Cart"}
