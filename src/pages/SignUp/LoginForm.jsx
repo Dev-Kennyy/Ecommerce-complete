@@ -1,9 +1,10 @@
-// src/pages/SignUp/LoginForm.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginHeader from "../../components/LoginHeader";
 import SignInput from "../../components/SignInput";
 import { useAuth } from "../../context/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LoginForm() {
   const { login } = useAuth();
@@ -15,16 +16,33 @@ function LoginForm() {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.placeholder]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleLogin = () => {
-    const userData = {
-      name: "Kendi Blessing", // hardcoded for now
-      email: formData["Email / Phone Number"],
-    };
+    const { emailOrPhone, password } = formData;
 
-    login(userData);
+    if (!emailOrPhone || !password) {
+      toast.error("Please enter both email/phone and password.");
+      return;
+    }
+
+    const storedUsers =
+      JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+    const matchedUser = storedUsers.find(
+      (user) =>
+        user.emailOrPhone === emailOrPhone && user.password === password,
+    );
+
+    if (!matchedUser) {
+      toast.error("Invalid credentials. Please try again.");
+      return;
+    }
+
+    // Log in
+    login({ name: matchedUser.name, emailOrPhone: matchedUser.emailOrPhone });
+    toast.success(`Welcome back, ${matchedUser.name}!`);
     navigate("/");
   };
 
@@ -33,25 +51,34 @@ function LoginForm() {
       <LoginHeader h1="Login to Exclusive Store" p="Enter your details below" />
       <div className="flex flex-col gap-9">
         <SignInput
-          placeholder="Email / Phone Number"
+          name="emailOrPhone"
+          placeholder="email / phone"
           type="text"
           onChange={handleChange}
         />
         <SignInput
-          placeholder="Password"
+          name="password"
+          placeholder="password"
           type="password"
           onChange={handleChange}
         />
       </div>
-      <div className="mt-10 flex items-center justify-between">
+      <div className="mt-10 flex items-center justify-between gap-8">
         <div
-          className="cursor-pointer rounded bg-[#DB4444] p-2 px-4 text-white"
+          className="cursor-pointer whitespace-nowrap rounded bg-[#DB4444] p-2 px-4 text-white"
           onClick={handleLogin}
         >
           Log In
         </div>
-        <p className="cursor-pointer text-[#DB4444]">Forgot Password?</p>
+        <p
+          className="cursor-pointer whitespace-nowrap text-sm text-[#DB4444]"
+          onClick={() => navigate("/signup")}
+        >
+          No Account? Sign Up here...➡️
+        </p>
       </div>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }

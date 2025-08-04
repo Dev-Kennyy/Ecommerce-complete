@@ -1,9 +1,10 @@
-// src/pages/SignUp/SignUpForm.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginHeader from "../../components/LoginHeader";
 import SignInput from "../../components/SignInput";
 import { useAuth } from "../../context/AuthContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SignUpForm() {
   const navigate = useNavigate();
@@ -16,16 +17,46 @@ function SignUpForm() {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.placeholder]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = () => {
-    const userData = {
-      name: formData["Name"],
-      email: formData["Email / Phone Number"],
-    };
+    const { name, emailOrPhone, password } = formData;
 
-    login(userData);
+    if (!name || !emailOrPhone || !password) {
+      toast.error("Invalid details, kindly enter correct details!", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+      });
+      return;
+    }
+
+    const storedUsers =
+      JSON.parse(localStorage.getItem("registeredUsers")) || [];
+
+    const userExists = storedUsers.some(
+      (user) => user.emailOrPhone === emailOrPhone,
+    );
+
+    if (userExists) {
+      toast.error("User already exists. Please log in instead.", {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "colored",
+      });
+      return;
+    }
+
+    const newUser = { name, emailOrPhone, password };
+    storedUsers.push(newUser);
+    localStorage.setItem("registeredUsers", JSON.stringify(storedUsers));
+
+    login({ name, emailOrPhone });
     navigate("/");
   };
 
@@ -33,13 +64,20 @@ function SignUpForm() {
     <div>
       <LoginHeader h1="Create an account" p="Enter your details below" />
       <div className="flex flex-col gap-9">
-        <SignInput placeholder="Name" type="text" onChange={handleChange} />
         <SignInput
-          placeholder="Email / Phone Number"
+          name="name"
+          placeholder="Name"
           type="text"
           onChange={handleChange}
         />
         <SignInput
+          name="emailOrPhone"
+          placeholder="Email / Phone"
+          type="text"
+          onChange={handleChange}
+        />
+        <SignInput
+          name="password"
           placeholder="Password"
           type="password"
           onChange={handleChange}
@@ -52,10 +90,6 @@ function SignUpForm() {
           Create Account
         </button>
 
-        <button className="flex items-center justify-center gap-4 rounded-sm border bg-transparent p-4 text-sm text-black">
-          <img src="Icon-Google.png" alt="" /> <span>Sign Up with Google</span>
-        </button>
-
         <p className="text-gray-500">
           Already have an account?
           <span
@@ -66,6 +100,7 @@ function SignUpForm() {
           </span>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -1,9 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Product({ productdata }) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const { user } = useAuth(); // ✅
+  const navigate = useNavigate("");
 
   if (!productdata) return null;
 
@@ -35,7 +39,13 @@ function Product({ productdata }) {
           isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
         }`}
         onClick={() => {
-          if (!isInCart) dispatch(addToCart(productWithUniqueId));
+          if (!user) {
+            navigate("/login");
+            // <ToastContainer />;
+            // t("Please login to add items to cart.");
+            return;
+          }
+          if (!isInCart) dispatch(addToCart(productdata));
         }}
       >
         {isInCart ? "In Cart" : "Add To Cart"}

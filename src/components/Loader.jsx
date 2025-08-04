@@ -1,26 +1,7 @@
-import { useState, CSSProperties } from "react";
-import { ClipLoader } from "react-spinners";
-
-// const override: CSSProperties = {
-//   display: "block",
-//   margin: "0 auto",
-//   borderColor: "red",
-// };
-
 function Loader() {
-  let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#ffffff");
-
   return (
-    <div className="sweet-loading">
-      <ClipLoader
-        color={color}
-        loading={loading}
-        // cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-green-950 border-t-transparent"></div>
     </div>
   );
 }

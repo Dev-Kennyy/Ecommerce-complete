@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { useAuth } from "../context/AuthContext"; // ✅
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 function Product({ productdata }) {
@@ -27,7 +27,7 @@ function Product({ productdata }) {
 
       <div
         className={`w-full text-center text-sm text-white ${
-          isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
+          user && isInCart ? "cursor-not-allowed bg-gray-400" : "bg-black"
         }`}
         onClick={() => {
           if (!user) {
@@ -39,7 +39,7 @@ function Product({ productdata }) {
           if (!isInCart) dispatch(addToCart(productdata));
         }}
       >
-        {isInCart ? "In Cart" : "Add To Cart"}
+        {user && isInCart ? "In Cart" : "Add To Cart"}
       </div>
 
       <div className="pr-16 text-left">

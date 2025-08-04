@@ -32,10 +32,20 @@ function MainHeader() {
       <LeftHeader />
       <MiddleHeader />
       <RightHeader />
-      <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? "❌" : <RxHamburgerMenu />}
-      </button>
 
+      {/* ⛔️ Move this OUTSIDE of `menuRef` */}
+      {isOpen && (
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          ❌
+        </button>
+      )}
+      {!isOpen && (
+        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+          <RxHamburgerMenu />
+        </button>
+      )}
+
+      {/* Menu that opens */}
       <div
         ref={menuRef}
         className={`absolute left-0 top-20 flex w-full flex-col items-center gap-6 bg-white transition-transform md:hidden ${

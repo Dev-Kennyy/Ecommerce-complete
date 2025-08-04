@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function HeaderNavList({ onItemClick }) {
+  const { user } = useAuth();
   return (
     <>
       <li className="py-3 text-center" onClick={onItemClick}>
@@ -12,9 +14,11 @@ function HeaderNavList({ onItemClick }) {
       <li className="py-3 text-center" onClick={onItemClick}>
         <Link to="/contact">Contact</Link>
       </li>
-      <li className="py-3 text-center" onClick={onItemClick}>
-        <Link to="/signup">Sign Up</Link>
-      </li>
+      {!user && (
+        <li className="py-3 text-center" onClick={onItemClick}>
+          <Link to="/signup">Sign Up</Link>
+        </li>
+      )}
     </>
   );
 }
