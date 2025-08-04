@@ -11,7 +11,7 @@ function AllProduct() {
     queryKey: ["product"],
     queryFn: thirdAppi,
   });
-  console.log(product);
+  // console.log(product);
   if (error) return <div>There's an error fetching</div>;
   if (isLoading) return <div>Loading wait</div>;
 

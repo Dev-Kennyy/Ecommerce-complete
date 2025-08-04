@@ -12,7 +12,7 @@ function Products() {
     queryKey: ["product"],
     queryFn: apiProductTwo,
   });
-  console.log(products);
+  // console.log(products);
   if (isLoading)
     return (
       <div className="p-10">
